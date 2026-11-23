@@ -112,6 +112,7 @@ def detect_and_handle_outliers(df, col="Total", method="iqr"):
     report["IsIQR"] = flags["iqr"][flagged]
     report["IsZScore"] = flags["zscore"][flagged]
     df.attrs["outlier_report"] = report
+    df["Is_Outlier"] = flags[method]
     if not report.empty:
         print(report.to_string(index=False))
     return df
@@ -151,10 +152,14 @@ def engineer_vn_features(df):
     df["Total_VND"] = df["Total"] * USD_TO_VND
     df["Total_VND_Clean"] = df["Total_Clean"] * USD_TO_VND
     df["Gross_Income_VND"] = df["gross income"].astype(float) * USD_TO_VND
+    df["Unit_Price_VND"] = df["Unit price"].astype(float) * USD_TO_VND
+    df["COGS_VND"] = df["cogs"].astype(float) * USD_TO_VND
     return df
 
 
-def run_preprocessing(input_path, output_path):
+def run_preprocessing(input_path=ROOT / "data" / "supermarket_sales.csv",
+                      output_path=ROOT / "outputs" / "cleaned_sales_vn.csv",):
+                          
     """Chạy pipeline, xuất CSV và trả về DataFrame cho các bước sau."""
     df = load_raw_data(input_path)
     df = handle_missing_values(df)
@@ -168,7 +173,4 @@ def run_preprocessing(input_path, output_path):
 
 
 if __name__ == "__main__":
-    run_preprocessing(
-        ROOT / "data" / "supermarket_sales.csv",
-        ROOT / "outputs" / "cleaned_sales_vn.csv",
-    )
+   run_preprocessing()
