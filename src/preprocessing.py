@@ -147,7 +147,7 @@ def engineer_vn_features(df):
         raise ValueError(f"Giờ giao dịch không hợp lệ: {raw_time[times.isna()].iloc[0]}")
     df["Time"] = df["Date"] + (times - times.dt.normalize())
     df["Month"] = df["Date"].dt.month.astype(int)
-    weekday = df["Date"].dt.dayofweek
+    weekday = df["Date"].dt.day_of_week
     df["DayOfWeek"] = weekday.map(WEEKDAYS)
     df["IsWeekend"] = weekday >= 5
     df["Hour"] = times.dt.hour.astype(int)
