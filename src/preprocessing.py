@@ -86,7 +86,7 @@ def handle_missing_values(df):
 
 
 def detect_and_handle_outliers(df, col="Total", method="iqr"):
-    """Báo cả IQR và Z-score, rồi cắt ngưỡng theo phương pháp được chọn."""
+    """Báo cả IQR và Z-score theo VNĐ, rồi cắt ngưỡng theo phương pháp được chọn."""
     method = method.lower()
     if method not in {"iqr", "zscore"}:
         raise ValueError("method phải là 'iqr' hoặc 'zscore'.")
@@ -94,6 +94,10 @@ def detect_and_handle_outliers(df, col="Total", method="iqr"):
     values = df[col].to_numpy(dtype=float)
     if values.size == 0 or not np.isfinite(values).all():
         raise ValueError(f"Cột {col} phải có dữ liệu số hữu hạn.")
+
+    # Tự động nhận diện tỷ giá quy đổi để hiển thị VNĐ (tránh nhân 2 lần nếu cột đã là _VND)
+    scale = 1 if col.endswith("_VND") else USD_TO_VND
+
     q1, q3 = np.percentile(values, [25, 75])
     iqr = q3 - q1
     mean, std = values.mean(), values.std()
@@ -104,17 +108,29 @@ def detect_and_handle_outliers(df, col="Total", method="iqr"):
     flags = {}
     for name, (lower, upper) in bounds.items():
         flags[name] = (values < lower) | (values > upper)
-        print(f"{col} {name}: {flags[name].sum()} outliers, bounds [{lower:.4f}, {upper:.4f}].")
+        print(
+            f"{col} ({name.upper()}): {flags[name].sum()} outliers | "
+            f"Ngưỡng VNĐ: [{lower * scale:,.0f} đ ; {upper * scale:,.0f} đ]"
+        )
+
     lower, upper = bounds[method]
     df[f"{col}_Clean"] = np.clip(values, lower, upper)
+
     flagged = flags["iqr"] | flags["zscore"]
     report = df.loc[flagged, ["Invoice ID", col, f"{col}_Clean"]].copy()
     report["IsIQR"] = flags["iqr"][flagged]
     report["IsZScore"] = flags["zscore"][flagged]
     df.attrs["outlier_report"] = report
-    df["Is_Outlier"] = flags[method]
+
     if not report.empty:
-        print(report.to_string(index=False))
+        report_vn = pd.DataFrame({
+            "Invoice ID": report["Invoice ID"],
+            "Total_VND": (report[col] * scale).map("{:,.0f}".format),
+            "Total_VND_Clean": (report[f"{col}_Clean"] * scale).map("{:,.0f}".format),
+            "IsIQR": report["IsIQR"],
+            "IsZScore": report["IsZScore"],
+        })
+        print(report_vn.to_string(index=False))
     return df
 
 
