@@ -121,6 +121,7 @@ def detect_and_handle_outliers(df, col="Total", method="iqr"):
     report["IsIQR"] = flags["iqr"][flagged]
     report["IsZScore"] = flags["zscore"][flagged]
     df.attrs["outlier_report"] = report
+    df["Is_Outlier"] = flags[method]
 
     if not report.empty:
         report_vn = pd.DataFrame({
