@@ -76,14 +76,9 @@ def main():
 
     # 2. Thống kê (TV2)
     t = _step(2, n, "Thống kê doanh thu cốt lõi (TV2)")
-    stats = {
-        "descriptive": revenue_stats.compute_descriptive_stats(df),
-        "by_day": revenue_stats.revenue_by_day(df),
-        "by_month": revenue_stats.revenue_by_month(df),
-        "by_category": revenue_stats.revenue_by_category(df),
-        "by_branch_payment": revenue_stats.revenue_by_branch_and_payment(df),
-        "kpi": insights.compute_kpis(df),
-    }
+    stats = revenue_stats.run_revenue_analysis(df)
+    revenue_stats.export_revenue_results(stats, output_dir=out_dir)
+    stats["kpi"] = insights.compute_kpis(df)
     _done(t)
 
     # 3. Đa chiều (TV3)
@@ -101,12 +96,7 @@ def main():
     if args.skip_charts:
         print("      bỏ qua (--skip-charts)")
     else:
-        p = lambda k: str(chart_dir / CHART_FILES[k])  # noqa: E731
-        visualizer.plot_daily_monthly_trend(stats["by_day"], stats["by_month"], p("trend"))
-        visualizer.plot_category_revenue(stats["by_category"], p("category"))
-        visualizer.plot_hour_weekday_heatmap(_first(multi["hour_weekday"]), p("heatmap"))
-        visualizer.plot_multivariate_category_timeslot(_first(multi["category_timeslot"]), p("multi"))
-        visualizer.plot_outlier_and_branch_boxplot(df, p("boxplot"))
+        visualizer.generate_all_charts(df, stats, multi, output_dir=str(chart_dir))
         print(f"      đã lưu {len(CHART_FILES)} biểu đồ -> {chart_dir}")
     _done(t)
 
