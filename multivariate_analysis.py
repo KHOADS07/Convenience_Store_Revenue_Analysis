@@ -218,7 +218,7 @@ def analyze_3d_category_timeslot_weekday(
 
     total_revenue = df[value_col].sum()
 
-    grouped = df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"], as_index=False).agg(
+    grouped = df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"], as_index=False, observed=False).agg(
         DoanhThu_VND=(value_col, "sum"),
         SoLuongDon=("Invoice ID", "count"),
     )
@@ -263,7 +263,7 @@ def analyze_branch_category_timeslot(
     """
     _validate_dataframe(df, ["KhuVuc_VN", "TimeSlot", "NhomHang_VN", value_col, "Invoice ID"])
 
-    grouped = df.groupby(["KhuVuc_VN", "TimeSlot", "NhomHang_VN"], as_index=False).agg(
+    grouped = df.groupby(["KhuVuc_VN", "TimeSlot", "NhomHang_VN"], as_index=False, observed=False).agg(
         DoanhThu_VND=(value_col, "sum"),
         SoLuongDon=("Invoice ID", "count"),
     )
