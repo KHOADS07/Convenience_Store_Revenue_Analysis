@@ -1,6 +1,6 @@
 # **ĐỒ ÁN MÔN HỌC: PHÂN TÍCH & TRỰC QUAN HÓA DOANH THU CHUỖI CỬA HÀNG TIỆN LỢI TẠI VIỆT NAM**
 ## **Học phần: Ngôn ngữ lập trình Python — Mã học phần: `012012410005`**
-
+## **NHÓM 5
 **Công nghệ sử dụng:** Python 3.10+, Pandas (OLAP Pivot), NumPy (Vectorization, IQR/Z-score), Matplotlib (300 DPI) & Unittest  
 **Kho mã nguồn:** `https://github.com/KHOADS07/Convenience_Store_Revenue_Analysis`  
 **Dữ liệu đầu vào:** Kaggle *Supermarket Sales* (1.000 giao dịch chuẩn hóa sang bối cảnh bán lẻ đô thị Việt Nam)
