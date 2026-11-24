@@ -63,7 +63,7 @@ def plot_category_revenue(df_cat, save_path):
     ax.set_title("Nhóm Đồ ăn nhanh & Thức uống (F&B) dẫn đầu cơ cấu doanh thu", fontsize=14, fontweight='bold')
     ax.set_xlabel("Doanh thu (Triệu VNĐ)")
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_trieu_vnd))
-    ax.set_xlim(0, revenue.max() * 1.12)
+    ax.set_xlim(0, revenues.max() * 1.12)
 
     mean_rev = revenues.mean()
     ax.axvline(mean_rev, color='red', linestyle='--', linewidth=1.5, label='Trung bình ngành')
