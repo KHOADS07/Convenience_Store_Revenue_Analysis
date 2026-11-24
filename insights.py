@@ -88,8 +88,8 @@ def _slot_context(slot: str) -> str:
 # -------------------------------------------------------------- Nhận định 1
 def _insight_time_slots(df: pd.DataFrame) -> dict:
     total = df[REV].sum()
-    g = df.groupby("TimeSlot").agg(doanh_thu=(REV, "sum"), so_don=(REV, "size"))
-    g["so_gio"] = df.groupby("TimeSlot")["Hour"].nunique()
+    g = df.groupby("TimeSlot", observed=False).agg(doanh_thu=(REV, "sum"), so_don=(REV, "size"))
+    g["so_gio"] = df.groupby("TimeSlot", observed=False)["Hour"].nunique()
     g["ty_trong"] = g["doanh_thu"] / total * 100
     g["dt_moi_gio"] = g["doanh_thu"] / g["so_gio"]       # công bằng giữa khung 2h và 4h
 
@@ -124,7 +124,7 @@ def _insight_time_slots(df: pd.DataFrame) -> dict:
 # -------------------------------------------------------------- Nhận định 2
 def _insight_multivariate(df: pd.DataFrame) -> dict:
     total = df[REV].sum()
-    combo = (df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"])[REV]
+    combo = (df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"], observed=False)[REV]
                .agg(doanh_thu="sum", so_don="size", aov="mean")
                .sort_values("doanh_thu", ascending=False))
     top3 = combo.head(3)
@@ -138,7 +138,7 @@ def _insight_multivariate(df: pd.DataFrame) -> dict:
     evidence.append(f"Nhóm hàng dẫn đầu toàn chuỗi: {lead} - {fmt_trieu(cat_rev.iloc[0])} "
                     f"({fmt_pct(cat_rev.iloc[0] / total * 100)}).")
     (c1, s1, d1) = top3.index[0]
-    lead_slot = df[df["NhomHang_VN"] == lead].groupby("TimeSlot")[REV].sum().idxmax()
+    lead_slot = df[df["NhomHang_VN"] == lead].groupby("TimeSlot", observed=False)[REV].sum().idxmax()
     return {
         "title": "Tổ hợp đa chiều: Mặt hàng x Khung giờ x Thứ",
         "finding": (f"Tổ hợp doanh thu cao nhất là {c1} - {s1} - {d1}; "
