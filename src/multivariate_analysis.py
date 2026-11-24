@@ -91,7 +91,8 @@ def analyze_hour_by_weekday(
         columns="DayOfWeek",
         values=value_col,
         aggfunc=aggfunc,
-        fill_value=0
+        fill_value=0,
+        observed=False
     )
 
     # Đảm bảo thứ tự logic Thứ 2 -> Chủ nhật
@@ -145,7 +146,8 @@ def analyze_category_by_timeslot(
         columns="TimeSlot",
         values=value_col,
         aggfunc="sum",
-        fill_value=0
+        fill_value=0,
+        observed=False
     )
     ordered_slots = [s for s in TIME_SLOTS_ORDER if s in pivot_rev.columns]
     pivot_rev = pivot_rev.reindex(columns=ordered_slots, fill_value=0)
@@ -156,7 +158,8 @@ def analyze_category_by_timeslot(
         columns="TimeSlot",
         values="Invoice ID",
         aggfunc="count",
-        fill_value=0
+        fill_value=0,
+        observed=False
     )
     pivot_orders = pivot_orders.reindex(columns=ordered_slots, fill_value=0)
 
@@ -218,7 +221,7 @@ def analyze_3d_category_timeslot_weekday(
 
     total_revenue = df[value_col].sum()
 
-    grouped = df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"], as_index=False, observed=False).agg(
+    grouped = df.groupby(["NhomHang_VN", "TimeSlot", "DayOfWeek"], as_index=False, observed=True).agg(
         DoanhThu_VND=(value_col, "sum"),
         SoLuongDon=("Invoice ID", "count"),
     )
@@ -263,7 +266,7 @@ def analyze_branch_category_timeslot(
     """
     _validate_dataframe(df, ["KhuVuc_VN", "TimeSlot", "NhomHang_VN", value_col, "Invoice ID"])
 
-    grouped = df.groupby(["KhuVuc_VN", "TimeSlot", "NhomHang_VN"], as_index=False, observed=False).agg(
+    grouped = df.groupby(["KhuVuc_VN", "TimeSlot", "NhomHang_VN"], as_index=False, observed=True).agg(
         DoanhThu_VND=(value_col, "sum"),
         SoLuongDon=("Invoice ID", "count"),
     )
@@ -278,7 +281,7 @@ def analyze_branch_category_timeslot(
     )
 
     # Xác định Top 1 mặt hàng theo từng Chi nhánh và từng Khung giờ
-    idx_max = grouped.groupby(["KhuVuc_VN", "TimeSlot"])["DoanhThu_VND"].idxmax()
+    idx_max = grouped.groupby(["KhuVuc_VN", "TimeSlot"], observed=True)["DoanhThu_VND"].idxmax()
     top_by_slot = grouped.loc[idx_max].sort_values(by=["KhuVuc_VN", "TimeSlot"]).reset_index(drop=True)
 
     # Pivot table đa tầng
@@ -287,7 +290,8 @@ def analyze_branch_category_timeslot(
         columns="TimeSlot",
         values=value_col,
         aggfunc="sum",
-        fill_value=0
+        fill_value=0,
+        observed=False
     )
     ordered_slots = [s for s in TIME_SLOTS_ORDER if s in pivot.columns]
     pivot = pivot.reindex(columns=ordered_slots, fill_value=0)
