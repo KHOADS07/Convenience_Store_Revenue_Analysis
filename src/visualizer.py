@@ -143,7 +143,41 @@ def plot_outlier_and_branch_boxplot(df, save_path):
     data_to_plot = [df[df['KhuVuc_VN'] == branch]['Total_VND'].dropna() for branch in branches]
 
     flierprops = dict(marker='o', markerfacecolor='red', markersize=6, alpha=0.6)
-    box = ax.boxplot(data_to_plot, patch_artist=True, flierprops=flierprops)
+    # Tính ngưỡng IQR toàn chuỗi (đồng bộ 100% với TV1 & TV5)
+    q1_all, q3_all = np.percentile(df["Total_VND"], [25, 75])
+    hi_all = q3_all + 1.5 * (q3_all - q1_all)
+
+    # Tắt fliers riêng lẻ của từng box để tránh lệch định nghĩa với báo cáo
+    box = ax.boxplot(
+        data_to_plot,
+        tick_labels=branches,
+        patch_artist=True,
+        showfliers=False,
+        widths=0.45,
+        medianprops=dict(color='#d62728', linewidth=2)
+    )
+
+    # Vẽ đường ngưỡng IQR toàn chuỗi
+    ax.axhline(
+        hi_all, color='#d62728', linestyle='--', linewidth=1.5,
+        label=f'Ngưỡng trên IQR toàn chuỗi ({hi_all/1e6:,.2f} triệu VNĐ)'
+    )
+
+    # Chấm đỏ đúng các hóa đơn outlier vượt ngưỡng toàn chuỗi trên từng chi nhánh
+    for idx, b_name in enumerate(branches, start=1):
+        vals = df.loc[df["KhuVuc_VN"] == b_name, "Total_VND"]
+        outliers = vals[vals > hi_all]
+        if not outliers.empty:
+            # Thêm jitter nhẹ theo trục X để các điểm gần nhau không đè khít lên nhau
+            jitter = np.linspace(-0.06, 0.06, len(outliers)) if len(outliers) > 1 else [0.0]
+            ax.scatter(
+                np.repeat(idx, len(outliers)) + jitter,
+                outliers,
+                color='#ff2a2a', edgecolor='black', s=55, zorder=5,
+                label='Đơn ngoại lai toàn chuỗi (9 đơn)' if idx == branches.index("Quận 7 - Dân cư") + 1 else ""
+            )
+
+    ax.legend(loc='upper left', fontsize=9.5)
 
     colors = ['#aec7e8', '#ffbb78', '#98df8a']
     for patch, color in zip(box['boxes'], colors):

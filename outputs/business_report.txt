@@ -1,0 +1,66 @@
+==============================================================================
+BÁO CÁO PHÂN TÍCH DOANH THU CỬA HÀNG TIỆN LỢI (VN)
+Thời điểm xuất: 24/11/2026 16:37
+==============================================================================
+
+I. CHỈ SỐ KPI TỔNG QUAN
+------------------------------------------------------------------------------
+  Tổng doanh thu     : 8.074.168.725 VNĐ
+  Số hóa đơn         : 1000
+  AOV (đơn trung bình): 8.074.169 VNĐ
+  Lợi nhuận gộp      : 384.484.225 VNĐ (4,8%)
+  Rating trung bình  : 6,97
+  Giai đoạn          : 01/01/2019 - 30/03/2019
+
+II. 4 NHẬN ĐỊNH KINH DOANH
+------------------------------------------------------------------------------
+
+NHẬN ĐỊNH 1: KHUNG GIỜ VÀNG VÀ NHỊP SINH HOẠT ĐÔ THỊ
+  * Phát hiện chính : Khung 10h-12h Sáng có doanh thu bình quân/giờ cao nhất, hơn khung thấp nhất (14h-18h Chiều) 10,7%; giờ bán tốt nhất là 19h.
+  * Số liệu chứng minh:
+      - 10h-12h Sáng: 1.545,0 triệu VNĐ | 191 đơn | 19,1% doanh thu | 772,5 triệu VNĐ/giờ
+      - 12h-14h Trưa: 1.519,7 triệu VNĐ | 192 đơn | 18,8% doanh thu | 759,9 triệu VNĐ/giờ
+      - 18h-21h Tối: 2.217,5 triệu VNĐ | 281 đơn | 27,5% doanh thu | 739,2 triệu VNĐ/giờ
+      - 14h-18h Chiều: 2.792,0 triệu VNĐ | 336 đơn | 34,6% doanh thu | 698,0 triệu VNĐ/giờ
+      - Giờ cao nhất: 19h (992,5 triệu VNĐ); giờ thấp nhất: 20h (574,2 triệu VNĐ) - chênh 72,8%.
+  * Bối cảnh VN     : Khung 10h-12h Sáng trùng với nhịp mua sắm buổi sáng và chuẩn bị bữa trưa, trong khi khung 14h-18h Chiều là giờ xế chiều và tan tầm nên lượng khách thấp hơn.
+  * Đề xuất hành động: Dồn nhân viên part-time (sinh viên) vào khung 10h-12h Sáng và quanh 19h; giảm định biên khung 14h-18h Chiều; chuẩn bị hàng trước 19h.
+
+NHẬN ĐỊNH 2: TỔ HỢP ĐA CHIỀU: MẶT HÀNG X KHUNG GIỜ X THỨ
+  * Phát hiện chính : Tổ hợp doanh thu cao nhất là Đồ ăn nhanh & Thức uống - 18h-21h Tối - Thứ 7; nhóm Đồ ăn nhanh & Thức uống bán mạnh nhất ở khung 18h-21h Tối.
+  * Số liệu chứng minh:
+      - Top 1: Đồ ăn nhanh & Thức uống | 18h-21h Tối | Thứ 7 -> 142,3 triệu VNĐ (1,8% tổng), 15 đơn, AOV 9.486.312 VNĐ
+      - Top 2: Phụ kiện công nghệ & Văn phòng phẩm | 14h-18h Chiều | Thứ 5 -> 132,4 triệu VNĐ (1,6% tổng), 15 đơn, AOV 8.828.050 VNĐ
+      - Top 3: Phụ kiện công nghệ & Văn phòng phẩm | 14h-18h Chiều | Thứ 3 -> 127,7 triệu VNĐ (1,6% tổng), 12 đơn, AOV 10.644.966 VNĐ
+      - Nhóm hàng dẫn đầu toàn chuỗi: Đồ ăn nhanh & Thức uống - 1.403,6 triệu VNĐ (17,4%).
+  * Bối cảnh VN     : Cơ cấu giỏ hàng dịch chuyển theo giờ và ngày: nhu cầu của Đồ ăn nhanh & Thức uống tập trung vào 18h-21h Tối (Thứ 7), phù hợp với thói quen mua sắm đô thị.
+  * Đề xuất hành động: Thiết kế combo/khuyến mãi cho Đồ ăn nhanh & Thức uống đúng khung 18h-21h Tối; tăng tồn kho Đồ ăn nhanh & Thức uống trước Thứ 7; xem xét kích hoạt thêm cho tổ hợp thấp điểm.
+
+NHẬN ĐỊNH 3: HÀNH VI THANH TOÁN SỐ TẠI VIỆT NAM
+  * Phát hiện chính : Ví điện tử / QR chiếm 34,5% số đơn, AOV 7.970.515 VNĐ; dùng nhiều nhất ở Quận 1 - Văn phòng (37,1%).
+  * Số liệu chứng minh:
+      - Ví điện tử / QR: 345 đơn (34,5%) | 2.749,8 triệu VNĐ (34,1%) | AOV 7.970.515 VNĐ
+      - Tiền mặt: 344 đơn (34,4%) | 2.805,2 triệu VNĐ (34,7%) | AOV 8.154.547 VNĐ
+      - Thẻ ngân hàng: 311 đơn (31,1%) | 2.519,2 triệu VNĐ (31,2%) | AOV 8.100.247 VNĐ
+      - Tỷ lệ đơn Ví điện tử / QR tại Quận 1 - Văn phòng: 37,1%
+      - Tỷ lệ đơn Ví điện tử / QR tại Thủ Đức - Đại học: 34,0%
+      - Tỷ lệ đơn Ví điện tử / QR tại Quận 7 - Dân cư: 32,3%
+      - AOV Ví điện tử / QR so với Tiền mặt: -2,3%
+  * Bối cảnh VN     : Khách ở Quận 1 - Văn phòng quen thanh toán số; Quận 7 - Dân cư còn dư địa chuyển đổi (32,3%).
+  * Đề xuất hành động: Hợp tác ví điện tử (MoMo/ZaloPay/VNPay) hoàn tiền/giảm giá theo ngưỡng đơn tại Quận 7 - Dân cư để nâng tỷ lệ thanh toán số; giữ ưu đãi tại Quận 1 - Văn phòng.
+
+NHẬN ĐỊNH 4: TÁC ĐỘNG CỦA ĐƠN NGOẠI LAI (MUA SỈ / SỰ KIỆN)
+  * Phát hiện chính : 9 đơn outlier (0,9% số đơn) đóng góp 2,9% doanh thu, tập trung ở Đồ gia dụng tiện ích và Quận 7 - Dân cư.
+  * Số liệu chứng minh:
+      - Ngưỡng IQR: [-9.899.236 VNĐ ; 24.793.552 VNĐ] (Q1=3.110.559 VNĐ, Q3=11.783.756 VNĐ)
+      - Số đơn outlier: 9/1000 (0,9%)
+      - Doanh thu từ đơn outlier: 230,3 triệu VNĐ (2,9% tổng doanh thu)
+      - Nhóm hàng nhiều outlier nhất: Đồ gia dụng tiện ích (4 đơn)
+      - Khu vực nhiều outlier nhất: Quận 7 - Dân cư (6 đơn)
+      - AOV đơn outlier: 25.587.333 VNĐ so với AOV chung 8.074.169 VNĐ
+  * Bối cảnh VN     : Các đơn giá trị lớn thường là mua sắm số lượng nhiều (sự kiện, gia đình, mua dự trữ).
+  * Đề xuất hành động: Xây dựng chương trình thành viên và gói mua số lượng lớn (giá sỉ mini) cho Quận 7 - Dân cư, ưu tiên nhóm Đồ gia dụng tiện ích.
+
+==============================================================================
+Số liệu được tính động từ dữ liệu sạch (outputs/cleaned_sales_vn.csv).
+==============================================================================
