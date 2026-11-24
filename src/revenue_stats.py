@@ -34,11 +34,11 @@ ROOT = Path(__file__).resolve().parents[1]
 # Các tên cột được chấp nhận. Ưu tiên tên chuẩn hóa của nhóm (từ TV1).
 COLUMN_ALIASES = {
     "revenue": [
-        "Total_VND_Clean",
+        "Total_VND",
         "Total_Clean",
         "Total / Total_VND",
         "Total",
-        "Total_VND",
+        "Total_VND_Clean",
         "doanh_thu",
     ],
     "profit": [
