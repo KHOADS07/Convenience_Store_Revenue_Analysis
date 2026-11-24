@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -62,6 +63,7 @@ def plot_category_revenue(df_cat, save_path):
     ax.set_title("Nhóm Đồ ăn nhanh & Thức uống (F&B) dẫn đầu cơ cấu doanh thu", fontsize=14, fontweight='bold')
     ax.set_xlabel("Doanh thu (Triệu VNĐ)")
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(format_trieu_vnd))
+    ax.set_xlim(0, revenue.max() * 1.12)
 
     mean_rev = revenues.mean()
     ax.axvline(mean_rev, color='red', linestyle='--', linewidth=1.5, label='Trung bình ngành')
@@ -88,7 +90,7 @@ def plot_hour_weekday_heatmap(pivot_hw, save_path):
     ax.set_xticklabels(pivot_hw.columns)
     ax.set_yticklabels(pivot_hw.index)
     
-    ax.set_title("Khung giờ 19h–20h và Trưa 12h-14h dẫn dắt doanh thu toàn chuỗi", fontsize=14, fontweight='bold')
+    ax.set_title("Ma trận doanh thu theo Khung giờ và Thứ (Đỉnh điểm 19h & 13h-15h)", fontsize=14, fontweight='bold')
     ax.set_xlabel("Thứ trong tuần")
     ax.set_ylabel("Khung giờ giao dịch")
 
@@ -98,7 +100,7 @@ def plot_hour_weekday_heatmap(pivot_hw, save_path):
             text_color = "white" if val > pivot_hw.values.max() * 0.6 else "black"
             ax.text(j, i, f"{val/1_000_000:.1f}M", ha="center", va="center", color=text_color, fontsize=9)
 
-    fig.colorbar(cax, ax=ax, label='Doanh thu (Triệu VNĐ)')
+    fig.colorbar(cax, ax=ax, label='Doanh thu (Triệu VNĐ)', format=ticker.FuncFormatter(format_trieu_vnd))
     
     plt.tight_layout()
     plt.savefig(save_path, dpi=300)
@@ -137,7 +139,7 @@ def plot_outlier_and_branch_boxplot(df, save_path):
     """
     fig, ax = plt.subplots(figsize=(9, 6))
     
-    branches = df['KhuVuc_VN'].unique()
+    branches = ["Quận 1 - Văn phòng", "Thủ Đức - Đại học", "Quận 7 - Dân cư"]
     data_to_plot = [df[df['KhuVuc_VN'] == branch]['Total_VND'].dropna() for branch in branches]
 
     flierprops = dict(marker='o', markerfacecolor='red', markersize=6, alpha=0.6)
@@ -148,7 +150,7 @@ def plot_outlier_and_branch_boxplot(df, save_path):
         patch.set_facecolor(color)
         
     ax.set_xticklabels(branches)
-    ax.set_title("Tần suất xuất hiện đơn hàng sỉ (Outliers) tại Khu dân cư Quận 7", fontsize=14, fontweight='bold')
+    ax.set_title("Phân phối giá trị hóa đơn và điểm ngoại lai (Outliers) theo 3 chi nhánh", fontsize=14, fontweight='bold')
     ax.set_ylabel("Giá trị hóa đơn (VNĐ)")
     ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f"{x:,.0f}"))
     ax.grid(axis='y', linestyle='--', alpha=0.5)
@@ -161,9 +163,24 @@ def generate_all_charts(df_clean, stats_dict, multi_dict, output_dir="outputs/ch
     """Hàm tổng phối chạy toàn bộ 5 biểu đồ, được gọi từ main.py"""
     create_dir_if_not_exists(output_dir)
 
-    df_day = stats_dict['day']
-    df_month = stats_dict['month']
-    df_cat = stats_dict['category']
+    # 1. Chuẩn hóa bảng theo ngày (hỗ trợ cả key của TV2 lẫn key test)
+    df_day = (stats_dict.get('by_day') if 'by_day' in stats_dict else stats_dict['day']).copy()
+    df_day = df_day.rename(columns={'day': 'Date', 'total_revenue': 'Total_VND'})
+    df_day['Date'] = pd.to_datetime(df_day['Date'])
+    df_day = df_day.sort_values('Date')
+    if '7-day MA' not in df_day.columns:
+        df_day['7-day MA'] = df_day['Total_VND'].rolling(7).mean()
+
+    # 2. Chuẩn hóa bảng theo tháng
+    df_month = (stats_dict.get('by_month') if 'by_month' in stats_dict else stats_dict['month']).copy()
+    df_month = df_month.rename(columns={'month': 'Month', 'total_revenue': 'Total_VND'})
+    if 'MoM_Growth' not in df_month.columns:
+        df_month['MoM_Growth'] = df_month['Total_VND'].pct_change()
+
+    # 3. Chuẩn hóa bảng theo mặt hàng
+    df_cat = (stats_dict.get('by_product') if 'by_product' in stats_dict else stats_dict['category']).copy()
+    df_cat = df_cat.rename(columns={'product': 'NhomHang_VN', 'total_revenue': 'Total_VND'})
+
     pivot_hw = multi_dict['hour_weekday']
     pivot_ct = multi_dict['category_timeslot']
 
@@ -172,11 +189,10 @@ def generate_all_charts(df_clean, stats_dict, multi_dict, output_dir="outputs/ch
     plot_hour_weekday_heatmap(pivot_hw, os.path.join(output_dir, '03_heatmap_khung_gio_thu.png'))
     plot_multivariate_category_timeslot(pivot_ct, os.path.join(output_dir, '04_da_chieu_hang_khung_gio.png'))
     plot_outlier_and_branch_boxplot(df_clean, os.path.join(output_dir, '05_boxplot_phan_phoi_chi_nhanh.png'))
-    
-    print(f"TV4: Da xuat thanh cong 5 bieu do tai '{output_dir}'.")
-if __name__ == "__main__":
-    import pandas as pd
 
+    print(f"TV4: Da xuat thanh cong 5 bieu do tai '{output_dir}'.")
+    
+if __name__ == "__main__":
     df = pd.read_csv("outputs/cleaned_sales_vn.csv")
     df['Date'] = pd.to_datetime(df['Date'])
 
@@ -193,7 +209,9 @@ if __name__ == "__main__":
     pivot_hw = df.pivot_table(index='Hour', columns='DayOfWeek', values='Total_VND', aggfunc='sum', fill_value=0)
     pivot_hw = pivot_hw.reindex(columns=[d for d in days_order if d in pivot_hw.columns])
 
-    pivot_ct = df.pivot_table(index='NhomHang_VN', columns='TimeSlot', values='Total_VND', aggfunc='sum', fill_value=0)
+    slots_order = ["10h-12h Sáng", "12h-14h Trưa", "14h-18h Chiều", "18h-21h Tối"]
+    pivot_ct = df.pivot_table(index='NhomHang_VN', columns='TimeSlot', values='Total_VND', aggfunc='sum', fill_value=0, observed=False)
+    pivot_ct = pivot_ct.reindex(columns=[s for s in slots_order if s in pivot_ct.columns])
 
     stats_dict = {'day': df_day, 'month': df_month, 'category': df_cat}
     multi_dict = {'hour_weekday': pivot_hw, 'category_timeslot': pivot_ct}
